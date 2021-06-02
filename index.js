@@ -16,7 +16,7 @@ const exampleEmbed = new Discord.MessageEmbed()
     { name: '`-g punch`', value: 'Pegale al Shike en la cara'},
     { name: '`-g ching`', value: 'Chong!'},
 )
-.setTimestamp()
+    .setTimestamp()
 .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
 
 
