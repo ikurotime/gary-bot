@@ -19,6 +19,9 @@ const exampleEmbed = new Discord.MessageEmbed()
     .setTimestamp()
 .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
 
+client.on("ready",()=>{
+    console.log("The bot is ready.")
+})
 
 client.on("message", message =>{
   if (message.author.bot) return;
