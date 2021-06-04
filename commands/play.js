@@ -19,7 +19,7 @@ const search = require('youtube-search')
   
         var opts = {
             maxResults: 1, //Maximo de resultados a encontrar
-            key: 'AIzaSyDhEAHbjbHDXgSfdpVAUIHUr15VwKYSxes', //Necesitas una CLAVE de la API de youtube. 
+            key: 'AIzaSyAi8exEgT11gaLBFMp7d3ERpdav3TPXir0', //Necesitas una CLAVE de la API de youtube. 
             type: "video" // Que tipo de resultado a obtener.
         };
 
