@@ -15,7 +15,7 @@ const exampleEmbed = new Discord.MessageEmbed()
     { name: '--- MÚSICA ---', value:'*Comandos de música*'},
     { name: '`g join`', value: 'Me uno a tu canal de voz'},
     { name: '`g leave`', value: 'Me voy del canal de voz'},
-    { name: '`g play [contenido]`', value: 'Busco una canción por su nombre y la pongo en voz (1er resultado)'},
+    { name: '`g play [contenido] / [link]`', value: 'Busco una canción por su nombre y la pongo en voz'},
     { name: '`g pause`', value: 'Pausa la canción actual'},
     { name: '`g resume`', value: 'Reaunuda la canción actual'},
     { name: '`g skip`', value: 'Salta la canción actual'},

@@ -84,8 +84,7 @@ client.on("message", async message =>{
         case 'play':
             if (!texto) return message.channel.send('Escribe alguna cancion o dame un link!')
             playSong(message, args, serverQueue, queue, play)
-            {serverQueue ? console.log(serverQueue.songs) : console.log('no hay cola')}
-
+            
             break;
         case 'skip':
              // Aquí verificamos si el usuario que escribió el comando está en un canal de voz y si hay una canción que omitir.
@@ -109,8 +108,6 @@ client.on("message", async message =>{
 
             }
             
-            console.log(serverQueue.songs)
-
             break;
         case '8ball':
 
