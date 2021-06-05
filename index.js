@@ -82,7 +82,10 @@ client.on("message", async message =>{
             break;
         case 'p':
         case 'play':
+            if (!texto) return message.channel.send('Escribe alguna cancion o dame un link!')
             playSong(message, args, serverQueue, queue, play)
+            {serverQueue ? console.log(serverQueue.songs) : console.log('no hay cola')}
+
             break;
         case 'skip':
              // Aquí verificamos si el usuario que escribió el comando está en un canal de voz y si hay una canción que omitir.
@@ -91,10 +94,23 @@ client.on("message", async message =>{
             if (!serverQueue) return message.channel.send('¡No hay canción que saltar!, la cola esta vacía');
 
             // Finalizamos el dispatcher
+            if (serverQueue.songs.length > 1){
             await serverQueue.connection.dispatcher.destroy();
             message.channel.send(`Reproduciendo ahora: **${serverQueue.songs[1].title}**`);
             play(message.guild, serverQueue.songs[1]);
             serverQueue.songs.shift()
+            }else{
+                 // Aquí borramos la cola de las canciones agregadas
+            serverQueue.songs = [];
+         
+            // Finalizamos el dispatcher
+            await serverQueue.connection.dispatcher.end();
+            message.channel.send('No hay más canciones, me piro.')
+
+            }
+            
+            console.log(serverQueue.songs)
+
             break;
         case '8ball':
 
@@ -105,7 +121,7 @@ client.on("message", async message =>{
             break;
         case 'queue':
         case 'q':
-            if (!serverQueue) return message.channel.send('¡No hay canción que mostrar!, la cola esta vacía');
+            if (!serverQueue.songs[0]) return message.channel.send('¡No hay canción que mostrar!, la cola esta vacía');
             let i = 1
         
             // Listamos las canciones de la cola

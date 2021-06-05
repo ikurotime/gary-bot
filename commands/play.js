@@ -4,7 +4,7 @@ const search = require('youtube-search')
    const playSong = async (message,args, serverQueue, queue, play) => {
     
     const voiceChannel = message.member.voice.channel;
-
+    var argIsUrl = false
     //verificamos que el usuario solicitante este conectado en un canal de voz.
       if (!voiceChannel) return message.channel.send('¡Necesitas unirte a un canal de voz para reproducir música!');
   
@@ -22,9 +22,17 @@ const search = require('youtube-search')
             key: 'AIzaSyAi8exEgT11gaLBFMp7d3ERpdav3TPXir0', //Necesitas una CLAVE de la API de youtube. 
             type: "video" // Que tipo de resultado a obtener.
         };
-
-        const songArg = await search(args.join(' '), opts);
-        const songURL = songArg.results[0].link;
+        if (args[0].startsWith('http')) argIsUrl = true
+        let songArg
+        let songURL
+        if (argIsUrl){
+           songArg = 'noArgs';
+           songURL = args[0];
+        }else{
+           songArg = await search(args.join(' '), opts);
+           songURL = songArg.results[0].link;
+        }
+        
         const songInfo = await ytdl.getInfo(songURL);
         const song = {
             title: songInfo.videoDetails.title,
@@ -44,7 +52,7 @@ const search = require('youtube-search')
             voiceChannel: voiceChannel, // guardamos el canal de voz
             connection: null, // un objeto para la conexión 
             songs: [], // creamos la lista de canciones
-            volume: 5, // volumen al iniciar la cola
+            volume: 2, // volumen al iniciar la cola
             playing: true, // un objeto para validar la cola de música en reproducción.
         };
         
