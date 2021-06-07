@@ -2,8 +2,10 @@ const Discord = require("discord.js")
 const client = new Discord.Client()
 const config = require("./config.json")
 const ytdl = require('ytdl-core')
+const axios = require('axios')
 
-const { exampleEmbed } = require('./commands/embeded.js')
+
+const { exampleEmbed,exampleEmbed2 } = require('./commands/embeded.js')
 const { playSong } = require('./commands/play.js')
 const { shikePunch } = require('./commands/punch.js')
 const { joinChannel, leaveChannel } = require("./commands/join_leave.js")
@@ -13,9 +15,11 @@ const play = (guild, song) =>  {
     const serverQueue = queue.get(guild.id);
     // verificamos que hay musica en nuestro objeto de lista
     if (!song) {
-    serverQueue.voiceChannel.leave(); // si no hay mas música en la cola, desconectamos nuestro bot
-    queue.delete(guild.id);
-    return;
+    setTimeout(function(){ 
+        serverQueue.voiceChannel.leave(); // si no hay mas música en la cola, desconectamos nuestro bot
+        queue.delete(guild.id);
+     }, 300000);
+     return;
     }
 
     // <-- Reproducción usando play()  -->
@@ -57,7 +61,45 @@ client.on("message", async message =>{
   
     switch (command) {
         case 'help':
-            message.channel.send(exampleEmbed);
+            const sendEmbed1 = () =>{
+                message.channel.send(exampleEmbed).then(async sentEmbed =>{
+                await sentEmbed.react('2️⃣')
+                const validEmojis = ['2️⃣']
+                const filter = (reaction, user) => {
+                    return validEmojis.includes(reaction.emoji.name) && user.id === message.author.id;
+                }
+                const collector = sentEmbed.createReactionCollector(filter, { time: 20000, maxEmojis: 1 });
+                collector.on('collect', (reaction) => {
+                const name = reaction.emoji.name;
+                      //you only use it in two cases but I assume you will use it for all later on
+                      
+                if (name === '2️⃣') {
+                    sentEmbed.delete()
+                    sendEmbed2()
+                      }
+                    })
+                })
+            }
+            const sendEmbed2 = () =>{
+                message.channel.send(exampleEmbed2).then(async sentEmbed =>{
+                await sentEmbed.react('1️⃣')
+                const validEmojis = ['1️⃣']
+                const filter = (reaction, user) => {
+                    return validEmojis.includes(reaction.emoji.name) && user.id === message.author.id;
+                }
+                const collector = sentEmbed.createReactionCollector(filter, { time: 20000, maxEmojis: 1 });
+                collector.on('collect', (reaction) => {
+                const name = reaction.emoji.name;
+                      //you only use it in two cases but I assume you will use it for all later on
+                      
+                if (name === '1️⃣') {
+                    sentEmbed.delete()
+                    sendEmbed1()
+                      }
+                    })
+                })
+            }
+            sendEmbed1()
             break;
         case 'ching':
             message.channel.send(`Chong!`);
@@ -86,14 +128,23 @@ client.on("message", async message =>{
             playSong(message, args, serverQueue, queue, play)
             
             break;
+        case 's':
         case 'skip':
              // Aquí verificamos si el usuario que escribió el comando está en un canal de voz y si hay una canción que omitir.
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
             // Aquí verificamos si el objeto de la lista de canciones esta vacía.
             if (!serverQueue) return message.channel.send('¡No hay canción que saltar!, la cola esta vacía');
 
-            // Finalizamos el dispatcher
-            if (serverQueue.songs.length > 1){
+            if (args){
+                num = (parseInt(args) - 1)
+                if(serverQueue.songs[num]){
+                    if (num > -1){
+                        message.channel.send(`Eliminado de la cola: **${serverQueue.songs[num].title}**`)
+                        serverQueue.songs.splice(num,1)
+                    }
+                }
+            }else{
+             if (serverQueue.songs.length > 1){
             await serverQueue.connection.dispatcher.destroy();
             message.channel.send(`Reproduciendo ahora: **${serverQueue.songs[1].title}**`);
             play(message.guild, serverQueue.songs[1]);
@@ -104,14 +155,13 @@ client.on("message", async message =>{
          
             // Finalizamos el dispatcher
             await serverQueue.connection.dispatcher.end();
-            message.channel.send('No hay más canciones, me piro.')
-
-            }
+            message.channel.send('No hay más canciones, me piro.')   
+            }}
             
             break;
         case '8ball':
 
-            var rpts = ["Sí", "No", "¿Por qué?", "Por favor", "Tal vez", "No sé", "Definitivamente?", " ¡Claro! "," Sí "," No "," Por supuesto! "," Por supuesto que no "];
+            var rpts = ["Sí", "No", "¿Por qué?", "Por favor", "Tal vez ", "Nah", "Definitivamente?", " Claro "," YEEE "," Lmao no "," Por supuesto! "," Por supuesto que no ","Cállate zorra"];
             if (!texto) return message.reply(`Escriba una pregunta.`);
             message.reply(rpts[Math.floor(Math.random() * rpts.length)]);
 
@@ -190,7 +240,41 @@ client.on("message", async message =>{
         
         message.channel.send(`Canción actual reanudada.`)
             break;
+        case 'cursed':
+            message.channel.send('lemme check the files').then(async msg => {
+                const res = await axios.get('https://api.pushshift.io/reddit/search/submission/?subreddit=cursedcomments&sort=desc&size=1000')
+                const getRandomInt = (min, max) => {
+                    return Math.floor(Math.random() * (max - min)) + min;
+                  }
+                  nmb = getRandomInt(0,100)
+                msg.delete({options: 1000}) 
+                message.channel.send('cursedcomment nº'+nmb,{files: [res.data.data[nmb].url]})
+            })
+            break;
+        case 'meme':
+            message.channel.send('lemme check the files').then(async msg => {
+                const res = await axios.get('https://api.pushshift.io/reddit/search/submission/?subreddit=memes&sort=desc&size=1000')
+                const getRandomInt = (min, max) => {
+                    return Math.floor(Math.random() * (max - min)) + min;
+                  }
+                  nmb = getRandomInt(0,100)
+                msg.delete({options: 1000}) 
+                message.channel.send('meme nº'+nmb,{files: [res.data.data[nmb].url]})
+            })
+            break;
+        case 'kurama':
+            message.delete()
+            const getRandomInt = (min, max) => {
+                return Math.floor(Math.random() * (max - min)) + min;
+              }
+              nmb = getRandomInt(1,8)
+            message.channel.send({files: ['./img/kurama/kurama'+ nmb +'.jpeg']})
+            if (nmb === 7) message.channel.send('squero')
+
+            
+            break;
         default:
+            
             message.channel.send('que dise ahi nose ingle')
             break;
     }    
