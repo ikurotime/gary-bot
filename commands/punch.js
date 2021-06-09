@@ -16,7 +16,7 @@ const shikePunch = async (message) => {
         context.drawImage(punched_avatar, 105, 325, 300, 300);
     }
     // Use the helpful Attachment class structure to process the file for you
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'punch.png');
     { targetMember 
         ? message.channel.send(`${message.author} ha pegado a <@${targetMember.user.id}>!`, attachment)
         : message.channel.send(`${message.author} ha pegado a Shike!`, attachment)

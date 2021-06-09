@@ -10,6 +10,7 @@ const { playSong } = require('./commands/play.js')
 const { shikePunch } = require('./commands/punch.js')
 const { joinChannel, leaveChannel } = require("./commands/join_leave.js")
 const { sendMeme } = require("./commands/borderMeme")
+const { memberJoined } = require("./commands/memberJoined")
 
 const prefix = "g "
 const play = (guild, song) =>  {
@@ -45,6 +46,13 @@ client.on('ready', () => {
       });
     console.log('Estoy Listo!');
    });
+
+   client.on('guildMemberAdd', (member) => {
+    const channel = member.guild.channels.cache.find(ch => ch.name === 'subnormales-texto');
+
+    memberJoined(member,channel)
+});
+
 
 const queue = new Map();
 
