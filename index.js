@@ -9,6 +9,7 @@ const { exampleEmbed,exampleEmbed2 } = require('./commands/embeded.js')
 const { playSong } = require('./commands/play.js')
 const { shikePunch } = require('./commands/punch.js')
 const { joinChannel, leaveChannel } = require("./commands/join_leave.js")
+const { sendMeme } = require("./commands/borderMeme")
 
 const prefix = "g "
 const play = (guild, song) =>  {
@@ -270,8 +271,14 @@ client.on("message", async message =>{
               nmb = getRandomInt(1,8)
             message.channel.send({files: ['./img/kurama/kurama'+ nmb +'.jpeg']})
             if (nmb === 7) message.channel.send('squero')
-
-            
+            break;
+         case 'border':
+             
+            if (message.attachments.size > 0) {
+                sendMeme(message,args)
+            }else{
+                message.channel.send('Incluye una imagen primero, anda')
+            }
             break;
         default:
             

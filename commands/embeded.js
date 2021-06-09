@@ -15,6 +15,7 @@ const exampleEmbed = new Discord.MessageEmbed()
     { name: '`g meme`', value: 'Te saco un meme de r/memes'},
     { name: '`g cursed`', value: 'Te saco un meme de r/cursedcomments'},
     { name: '`g kurama`', value: 'Te saco un mate kurama'},
+    { name: '`g border [texto] / g border [texto1] - [texto2]`', value: 'meme feo bordes negros'},
 )
 .setTimestamp()
 .setFooter('Gary \'s vessel', 'https://i.imgur.com/PuvozXs.png?1');
