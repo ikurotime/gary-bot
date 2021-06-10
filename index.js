@@ -11,6 +11,8 @@ const { shikePunch } = require('./commands/punch.js')
 const { joinChannel, leaveChannel } = require("./commands/join_leave.js")
 const { sendMeme } = require("./commands/borderMeme")
 const { memberJoined } = require("./commands/memberJoined")
+const { make3ds } = require("./commands/3ds")
+const { featureDante } = require("./commands/dante")
 
 const prefix = "g "
 const play = (guild, song) =>  {
@@ -280,13 +282,19 @@ client.on("message", async message =>{
             message.channel.send({files: ['./img/kurama/kurama'+ nmb +'.jpeg']})
             if (nmb === 7) message.channel.send('squero')
             break;
-         case 'border':
+        case 'border':
              
             if (message.attachments.size > 0) {
                 sendMeme(message,args)
             }else{
                 message.channel.send('Incluye una imagen primero, anda')
             }
+            break;
+        case '3ds':
+            make3ds(message)
+            break;
+        case 'dante':
+            featureDante(message)
             break;
         default:
             

@@ -16,6 +16,8 @@ const exampleEmbed = new Discord.MessageEmbed()
     { name: '`g cursed`', value: 'Te saco un meme de r/cursedcomments'},
     { name: '`g kurama`', value: 'Te saco un mate kurama'},
     { name: '`g border [texto] / g border [texto1] - [texto2]`', value: 'meme feo bordes negros'},
+    { name: '`g 3ds`', value: '3ds cover'},
+    { name: '`g dante`', value: 'Feature Dante from the Devil may cry series'},
 )
 .setTimestamp()
 .setFooter('Gary \'s vessel', 'https://i.imgur.com/PuvozXs.png?1');
