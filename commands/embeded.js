@@ -18,6 +18,7 @@ const exampleEmbed = new Discord.MessageEmbed()
     { name: '`g border [texto] / g border [texto1] - [texto2]`', value: 'meme feo bordes negros'},
     { name: '`g 3ds`', value: '3ds cover'},
     { name: '`g dante`', value: 'Feature Dante from the Devil may cry series'},
+    { name: '`g quote`', value: 'Hago una quote del mensaje respondido'},
 )
 .setTimestamp()
 .setFooter('Gary \'s vessel', 'https://i.imgur.com/PuvozXs.png?1');
