@@ -13,6 +13,7 @@ const { sendMeme } = require("./commands/borderMeme")
 const { memberJoined } = require("./commands/memberJoined")
 const { make3ds } = require("./commands/3ds")
 const { featureDante } = require("./commands/dante")
+const { quote } = require("./commands/quote")
 
 const prefix = "g "
 const play = (guild, song) =>  {
@@ -283,8 +284,7 @@ client.on("message", async message =>{
             if (nmb === 7) message.channel.send('squero')
             break;
         case 'border':
-             
-            if (message.attachments.size > 0) {
+            if (message.reference !== null) {
                 sendMeme(message,args)
             }else{
                 message.channel.send('Incluye una imagen primero, anda')
@@ -295,6 +295,9 @@ client.on("message", async message =>{
             break;
         case 'dante':
             featureDante(message)
+            break;
+        case 'quote':
+            quote(message)
             break;
         default:
             

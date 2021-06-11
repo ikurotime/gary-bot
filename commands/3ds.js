@@ -8,7 +8,13 @@ const make3ds = async (message) => {
     const background = await Canvas.loadImage('./img/3ds.png');
     // This uses the canvas dimensions to stretch the image onto the entire canvas
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
-    const avatar = await Canvas.loadImage(message.attachments.array()[0].url);
+    let avatar
+     if (message.reference === null){
+         avatar = await Canvas.loadImage(message.attachments.array()[0].url)
+        }else{
+         const repliedTo = await message.channel.messages.fetch(message.reference.messageID);
+         avatar = await Canvas.loadImage(repliedTo.attachments.array()[0].url)
+        }
     context.drawImage(avatar, 3, 0, 850, 834);
 
     // Use the helpful Attachment class structure to process the file for you
