@@ -14,6 +14,7 @@ const { memberJoined } = require("./commands/memberJoined")
 const { make3ds } = require("./commands/3ds")
 const { featureDante } = require("./commands/dante")
 const { quote } = require("./commands/quote")
+const { watchTogueter } = require("./commands/watchTogether")
 
 const prefix = "g "
 const play = (guild, song) =>  {
@@ -299,7 +300,11 @@ client.on("message", async message =>{
         case 'quote':
             quote(message)
             break;
-        default:
+        case 'watchyt':
+            if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
+            watchTogueter(message)
+            break;
+            default:
             
             message.channel.send('que dise ahi nose ingle')
             break;
