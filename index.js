@@ -21,9 +21,9 @@ const play = (guild, song) =>  {
     const serverQueue = queue.get(guild.id);
     // verificamos que hay musica en nuestro objeto de lista
     if (!song) {
+    queue.delete(guild.id);
     setTimeout(function(){ 
         serverQueue.voiceChannel.leave(); // si no hay mas música en la cola, desconectamos nuestro bot
-        queue.delete(guild.id);
      }, 300000);
      return;
     }
