@@ -145,6 +145,7 @@ client.on("message", async message =>{
             break;
         case 's':
         case 'skip':
+            console.log(serverQueue.songs.length)
              // Aquí verificamos si el usuario que escribió el comando está en un canal de voz y si hay una canción que omitir.
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
             // Aquí verificamos si el objeto de la lista de canciones esta vacía.
@@ -158,21 +159,20 @@ client.on("message", async message =>{
                         serverQueue.songs.splice(num,1)
                     }
                 }
-            }else{
-             if (serverQueue.songs.length > 1){
+            }else if (serverQueue.songs.length > 1){
             await serverQueue.connection.dispatcher.destroy();
             message.channel.send(`Reproduciendo ahora: **${serverQueue.songs[1].title}**`);
             play(message.guild, serverQueue.songs[1]);
             serverQueue.songs.shift()
-            }else{
+            return
+            }
                  // Aquí borramos la cola de las canciones agregadas
             serverQueue.songs = [];
          
             // Finalizamos el dispatcher
             await serverQueue.connection.dispatcher.end();
             message.channel.send('No hay más canciones, me piro.')   
-            }}
-            
+                 
             break;
         case '8ball':
 
@@ -183,7 +183,7 @@ client.on("message", async message =>{
             break;
         case 'queue':
         case 'q':
-            if (!serverQueue.songs[0]) return message.channel.send('¡No hay canción que mostrar!, la cola esta vacía');
+            if (!serverQueue ) return message.channel.send('¡No hay canción que mostrar!, la cola esta vacía');
             let i = 1
         
             // Listamos las canciones de la cola
@@ -208,7 +208,7 @@ client.on("message", async message =>{
              let countSong = `\n${hr}\n ${serverQueue.songs.length > 1 ? `${serverQueue.songs.length} canciones.` : `${serverQueue.songs.length} canción.` } `
              let listValue = `${list ? list : 'No hay canciones en cola'}`
             const songInfoEmbed = new Discord.MessageEmbed()
-            .setColor('#0099ff')
+            .setColor(config.COLOR_EMBED)
             .setTitle('LISTA DE CANCIONES')
             .setThumbnail(`${serverQueue.songs[0].thumbnail}`)
             .addFields(
@@ -217,7 +217,7 @@ client.on("message", async message =>{
                 {name:'Canciones', value:countSong}
             )
             .setTimestamp()
-            .setFooter('Gary \'s vessel', 'https://i.imgur.com/PuvozXs.png')
+            .setFooter('Gary \'s vessel', 'https://imgur.com/a/6UMZETC')
              message.channel.send(songInfoEmbed)
         
             break;
@@ -306,14 +306,14 @@ client.on("message", async message =>{
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
             watchTogueter(message)
             break;
-        case 'delete queue':
+        case 'delete':
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
-            if (!queue) return message.channel.send('No hay ninguna cola que eliminar')
-            queue.delete(guild.id);
+            if (!message.guild) return message.channel.send('No hay ninguna cola que eliminar')
+            queue.delete(message.guild.id);
             message.channel.send('La cola ha sido eliminada')
             break;
-            default:
-            message.channel.send('que dise ahi nose ingle')
+        default:
+         message.channel.send('que dise ahi nose ingle')
             break;
     }    
       

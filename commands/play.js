@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const ytdl = require('ytdl-core')
+const config = require("../config.json")
 const search = require('youtube-search')
 
 const playSelectedSong = async (message,songURL, serverQueue, queue, play,voiceChannel) =>{
@@ -98,7 +99,7 @@ try {
            songArg = await search(args.join(' '), opts);
            const embed = new Discord.MessageEmbed();
         embed.setTitle('Reacciona para elegir la canción')
-        embed.setColor('#0099ff');
+        embed.setColor(config.COLOR_EMBED);
         embed.addFields(
           {name:'1.',value: songArg.results[0].title},
           {name:'2.',value: songArg.results[1].title},
