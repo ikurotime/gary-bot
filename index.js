@@ -17,7 +17,7 @@ const { quote } = require("./commands/quote")
 const { watchTogueter } = require("./commands/watchTogether")
 
 const prefix = "g "
-const play = (guild, song) =>  {
+const play = (guild, song,message) =>  {
     const serverQueue = queue.get(guild.id);
     // verificamos que hay musica en nuestro objeto de lista
     if (!song) {
@@ -40,6 +40,7 @@ const play = (guild, song) =>  {
     })
     .on('error', error => {
     console.error(error);
+    message.channel.send('Ha ocurrido un error, espera un momento y vuelve a intentarlo (`g delete queue` podria ayudar)')
     });
 
     // Configuramos el volumen de la reproducción de la canción
@@ -305,8 +306,13 @@ client.on("message", async message =>{
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
             watchTogueter(message)
             break;
+        case 'delete queue':
+            if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
+            if (!queue) return message.channel.send('No hay ninguna cola que eliminar')
+            queue.delete(guild.id);
+            message.channel.send('La cola ha sido eliminada')
+            break;
             default:
-            
             message.channel.send('que dise ahi nose ingle')
             break;
     }    
