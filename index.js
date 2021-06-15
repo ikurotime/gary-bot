@@ -217,7 +217,7 @@ client.on("message", async message =>{
                 {name:'Canciones', value:countSong}
             )
             .setTimestamp()
-            .setFooter('Gary \'s vessel', 'https://imgur.com/a/6UMZETC')
+            .setFooter('Gary \'s vessel', 'https://i.imgur.com/AVrgZHK.png')
              message.channel.send(songInfoEmbed)
         
             break;

@@ -5,7 +5,7 @@ const exampleEmbed = new Discord.MessageEmbed()
 .setColor(config.COLOR_EMBED)
 .setTitle('Comandos disponibles para el bot - 1')
 .setDescription('*Esto es lo que puedo hacer*')
-.setThumbnail('https://imgur.com/a/6UMZETC')
+.setThumbnail('https://i.imgur.com/AVrgZHK.png')
 .addFields(
     { name: '--- FUN ---', value:'*Comandos variados*'},
     { name: '`g say [contenido]`', value: 'Digo lo que quieras' },
@@ -22,13 +22,13 @@ const exampleEmbed = new Discord.MessageEmbed()
     { name: '`g quote`', value: 'Hago una quote del mensaje respondido'},
 )
 .setTimestamp()
-.setFooter('Gary \'s vessel', 'https://imgur.com/a/6UMZETC');
+.setFooter('Gary \'s vessel', 'https://i.imgur.com/AVrgZHK.png');
 
 const exampleEmbed2 = new Discord.MessageEmbed()
 .setColor(config.COLOR_EMBED)
 .setTitle('Comandos disponibles para el bot - 2')
 .setDescription('*Gary por el día, DJ Vessel por la noche*')
-.setThumbnail('https://imgur.com/a/6UMZETC')
+.setThumbnail('https://i.imgur.com/AVrgZHK.png')
 .addFields(
     { name: '--- MÚSICA ---', value:'*Comandos de música*'},
     { name: '`g join`', value: 'Me uno a tu canal de voz'},
@@ -40,7 +40,7 @@ const exampleEmbed2 = new Discord.MessageEmbed()
     { name: '`g queue`', value: 'Muestro la lista de reproducción y te doy info de la canción'}
 )
 .setTimestamp()
-.setFooter('Gary \'s vessel', 'https://i.imgur.com/PuvozXs.png?1');
+.setFooter('Gary \'s vessel', 'https://i.imgur.com/AVrgZHK.png');
 
 
 module.exports = {exampleEmbed, exampleEmbed2}
