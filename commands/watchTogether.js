@@ -1,10 +1,8 @@
 const Discord = require("discord.js")
-const client = new Discord.Client()
 const fetch = require('node-fetch')
 const config = require("../config.json")
-const disbut = require('discord.js-buttons')(client);
 
-const watchTogueter = async (message) => {
+const watchTogueter = async (message, disbut) => {
     let channel = message.member.voice.channel
     fetch(`https://discord.com/api/v8/channels/${channel.id}/invites`,{
         method: "POST",
@@ -34,6 +32,6 @@ const watchTogueter = async (message) => {
         .setLabel('Unirse')
       
       message.channel.send({ button: button, embed: embed });
-    })
+    }).then(msg => msg.delete({options: 600000}))
     }
 module.exports = { watchTogueter }

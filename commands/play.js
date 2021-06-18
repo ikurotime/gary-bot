@@ -67,7 +67,7 @@ try {
   }
                 
 }
-   const playSong = async (message,args, serverQueue, queue, play) => {
+   const playSong = async (message,args, serverQueue, queue, play, disbut) => {
     
     const voiceChannel = message.member.voice.channel;
     var argIsUrl = false
@@ -97,56 +97,73 @@ try {
            playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
         }else{
            songArg = await search(args.join(' '), opts);
-           const embed = new Discord.MessageEmbed();
-        embed.setTitle('Reacciona para elegir la canción')
-        embed.setColor(config.COLOR_EMBED);
-        embed.addFields(
-          {name:'1.',value: songArg.results[0].title},
-          {name:'2.',value: songArg.results[1].title},
-          {name:'3.',value: songArg.results[2].title},
-          {name:'4.',value: songArg.results[3].title},
-          {name:'5.',value: songArg.results[4].title})
+           let Option1 = new disbut.MessageButton()
+          .setStyle('gray')
+          .setID('one') 
+          .setLabel(`1. ${songArg.results[0].title}`)
+          let Option2 = new disbut.MessageButton()
+          .setStyle('gray')
+          .setID('two') 
+          .setLabel(`2. ${songArg.results[1].title}`)
+          let Option3 = new disbut.MessageButton()
+          .setStyle('gray')
+          .setID('three') 
+          .setLabel(`3. ${songArg.results[2].title}`)
+          let Option4 = new disbut.MessageButton()
+          .setStyle('gray')
+          .setID('four') 
+          .setLabel(`4. ${songArg.results[3].title}`)
+          let Option5 = new disbut.MessageButton()
+          .setStyle('gray')
+          .setID('five') 
+          .setLabel(`5. ${songArg.results[4].title}`)
 
-        message.channel.send(embed).then(async sentEmbed => {
-          await sentEmbed.react('1️⃣')
-          await sentEmbed.react('2️⃣')
-          await sentEmbed.react('3️⃣')
-          await sentEmbed.react('4️⃣')
-          await sentEmbed.react('5️⃣')
+          let buttonRow1 = new disbut.MessageActionRow()
+          .addComponent(Option1)
+          let buttonRow2 = new disbut.MessageActionRow()
+          .addComponent(Option2)
+          let buttonRow3 = new disbut.MessageActionRow()
+          .addComponent(Option3)
+          let buttonRow4 = new disbut.MessageActionRow()
+          .addComponent(Option4)
+          let buttonRow5 = new disbut.MessageActionRow()
+          .addComponent(Option5)
+          const embed = new Discord.MessageEmbed()
+          .setTitle('Escoge la canción 👇')
+          .setColor(config.COLOR_EMBED);
           
-            const validEmojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
-            const filter = (reaction, user) => {
-              return validEmojis.includes(reaction.emoji.name) && user.id === message.author.id;
-            }
-            const collector = sentEmbed.createReactionCollector(filter, { time: 20000, maxEmojis: 1 });
-            collector.on('collect', (reaction) => {
-              const name = reaction.emoji.name;
-              //you only use it in two cases but I assume you will use it for all later on
-              
-              if (name === '1️⃣') {
+          let m = await message.channel.send({components: [buttonRow1,buttonRow2,buttonRow3,buttonRow4,buttonRow5],embed: embed})
+          
+            const filter = (button) => button.clicker.user.id === message.author.id;
+            const collector = m.createButtonCollector(filter, { time: 20000 });
+            collector.on('collect', async b => {
+              console.log(b.id)
+              b.defer()
+              if (b.id === 'one') {
                 songURL = songArg.results[0].link;
                 playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
-                sentEmbed.delete()
-              } else if (name === '2️⃣') {
+                b.message.delete()
+                collector.stop()
+              } else if (b.id === 'two') {
                 songURL = songArg.results[1].link;
                 playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
-                sentEmbed.delete()
-              } else if (name === '3️⃣') {
+                b.message.delete()
+              } else if (b.id === 'three') {
                 songURL = songArg.results[2].link;
                 playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
-                sentEmbed.delete()
-              }else if (name === '4️⃣') {
+                b.message.delete()
+              }else if (b.id === 'four') {
                 songURL = songArg.results[3].link;
                 playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
-                sentEmbed.delete()
-              }else if (name === '5️⃣') {
+                b.message.delete()
+              }else if (b.id === 'five') {
                 songURL = songArg.results[4].link;
                 playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
-                sentEmbed.delete()
+                b.message.delete()
               }
             })
             
-        })
+        
 
         }
         

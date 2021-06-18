@@ -1,11 +1,13 @@
-const Discord = require("discord.js")
-const client = new Discord.Client()
+const Discord = require('discord.js'); // Define the discord.js module
+const client = new Discord.Client(); // Creating discord.js client (constructor)
+const disbut = require('discord-buttons'); // Starting the discord-buttons class
+disbut(client)
 const config = require("./config.json")
 const ytdl = require('ytdl-core')
 const axios = require('axios')
 
 
-const { exampleEmbed,exampleEmbed2 } = require('./commands/embeded.js')
+const { helpEmbed1,helpEmbed2,helpEmbedMusic } = require('./commands/embeded.js')
 const { playSong } = require('./commands/play.js')
 const { shikePunch } = require('./commands/punch.js')
 const { joinChannel, leaveChannel } = require("./commands/join_leave.js")
@@ -53,15 +55,96 @@ client.on('ready', () => {
     console.log('Estoy Listo!');
    });
 
-   client.on('guildMemberAdd', (member) => {
+client.on('guildMemberAdd', (member) => {
     const channel = member.guild.channels.cache.find(ch => ch.name === 'subnormales-texto');
 
     memberJoined(member,channel)
-});
-
+    });
 
 const queue = new Map();
+const embed = new Discord.MessageEmbed()
+.setTitle("Gary help")
+.setDescription("¿En que te puedo ayudar? :wink: ")
+.setColor(config.COLOR_EMBED)  
+let Commands1 = new disbut.MessageButton()
+.setStyle('blurple')
+.setID('commands_1') 
+.setLabel('Comandos')
+.setEmoji('👉')
+let leftArrow = new disbut.MessageButton()
+.setStyle('grey')
+.setID('left') 
+.setLabel('')
+.setEmoji('⬅️')
+let RightArrow = new disbut.MessageButton()
+.setStyle('grey')
+.setID('right') 
+.setLabel('')
+.setEmoji('➡️')
+let Commands2 = new disbut.MessageButton()
+.setStyle('blurple')
+.setID('commands_2') 
+.setLabel('Comandos')
+.setEmoji('2️⃣')
+let CommandsMusic = new disbut.MessageButton()
+.setStyle('blurple')
+.setID('commands_3') 
+.setLabel('Comandos Música')
+.setEmoji('🎵')
+let Invite = new disbut.MessageButton()
+.setStyle('green')
+.setID('invite') 
+.setLabel('Invite‎‎')
+.setEmoji('📩')
+let Delete = new disbut.MessageButton()
+.setStyle('red')
+.setID('commands_delete') 
+.setLabel('Exit')
+let GoBack = new disbut.MessageButton()
+.setStyle('grey')
+.setID('GoBack') 
+.setLabel('Go back')
+.setEmoji('⬅️')
 
+client.on('clickButton', async (button) => {
+    switch (button.id) {
+        case 'commands_1':
+            await button.defer().catch(console.error)
+            await button.message.delete()
+            await button.channel.send({buttons: [RightArrow,GoBack,Delete], embed:helpEmbed1})
+            break;
+        case 'commands_3':
+            await button.defer().catch(console.error)
+            button.message.delete()
+            button.channel.send({buttons: [GoBack,Delete], embed:helpEmbedMusic})
+            break;
+        case 'left':
+            await button.defer().catch(console.error)
+            button.message.delete()
+            button.channel.send({buttons: [RightArrow,GoBack,Delete], embed:helpEmbed1})
+            break;
+        case 'right':
+            await button.defer().catch(console.error)
+            button.message.delete()
+            button.channel.send({buttons: [leftArrow,GoBack,Delete], embed:helpEmbed2})
+            break;
+        case 'GoBack':
+            await button.defer().catch(console.error)
+            button.message.delete()
+            button.channel.send({ buttons: [Commands1,CommandsMusic,Invite,Delete],  embed })
+            break;
+        case 'commands_delete':
+            await button.defer().catch(console.error)
+            await button.message.delete()
+            break;
+        case 'invite':
+            await button.defer().catch(console.error)
+            await button.channel.send('https://discord.com/api/oauth2/authorize?client_id=849605392027353108&permissions=8&scope=bot')
+            break;
+        default:
+            break;
+    }
+    })
 client.on("message", async message =>{
   if (message.author.bot) return;
   if (!message.content.startsWith(prefix)) return;
@@ -75,46 +158,8 @@ client.on("message", async message =>{
   let texto = args.join(" ");
   
     switch (command) {
-        case 'help':
-            const sendEmbed1 = () =>{
-                message.channel.send(exampleEmbed).then(async sentEmbed =>{
-                await sentEmbed.react('2️⃣')
-                const validEmojis = ['2️⃣']
-                const filter = (reaction, user) => {
-                    return validEmojis.includes(reaction.emoji.name) && user.id === message.author.id;
-                }
-                const collector = sentEmbed.createReactionCollector(filter, { time: 20000, maxEmojis: 1 });
-                collector.on('collect', (reaction) => {
-                const name = reaction.emoji.name;
-                      //you only use it in two cases but I assume you will use it for all later on
-                      
-                if (name === '2️⃣') {
-                    sentEmbed.delete()
-                    sendEmbed2()
-                      }
-                    })
-                })
-            }
-            const sendEmbed2 = () =>{
-                message.channel.send(exampleEmbed2).then(async sentEmbed =>{
-                await sentEmbed.react('1️⃣')
-                const validEmojis = ['1️⃣']
-                const filter = (reaction, user) => {
-                    return validEmojis.includes(reaction.emoji.name) && user.id === message.author.id;
-                }
-                const collector = sentEmbed.createReactionCollector(filter, { time: 20000, maxEmojis: 1 });
-                collector.on('collect', (reaction) => {
-                const name = reaction.emoji.name;
-                      //you only use it in two cases but I assume you will use it for all later on
-                      
-                if (name === '1️⃣') {
-                    sentEmbed.delete()
-                    sendEmbed1()
-                      }
-                    })
-                })
-            }
-            sendEmbed1()
+        case 'help':    
+            message.channel.send({ buttons: [Commands1,CommandsMusic,Invite,Delete],  embed })       
             break;
         case 'ching':
             message.channel.send(`Chong!`);
@@ -140,12 +185,11 @@ client.on("message", async message =>{
         case 'p':
         case 'play':
             if (!texto) return message.channel.send('Escribe alguna cancion o dame un link!')
-            playSong(message, args, serverQueue, queue, play)
+            playSong(message, args, serverQueue, queue, play, disbut)
             
             break;
         case 's':
         case 'skip':
-            console.log(serverQueue.songs.length)
              // Aquí verificamos si el usuario que escribió el comando está en un canal de voz y si hay una canción que omitir.
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
             // Aquí verificamos si el objeto de la lista de canciones esta vacía.
@@ -304,7 +348,7 @@ client.on("message", async message =>{
             break;
         case 'watchyt':
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
-            watchTogueter(message)
+            watchTogueter(message, disbut)
             break;
         case 'delete':
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');

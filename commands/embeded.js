@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const config = require("../config.json")
 
-const exampleEmbed = new Discord.MessageEmbed()
+const helpEmbed1 = new Discord.MessageEmbed()
 .setColor(config.COLOR_EMBED)
 .setTitle('Comandos disponibles para el bot - 1')
 .setDescription('*Esto es lo que puedo hacer*')
@@ -15,7 +15,16 @@ const exampleEmbed = new Discord.MessageEmbed()
     { name: '`g 8ball [contenido]`', value: 'Respondo a tu pregunta, mi veredicto es absoluto'},
     { name: '`g meme`', value: 'Te saco un meme de r/memes'},
     { name: '`g cursed`', value: 'Te saco un meme de r/cursedcomments'},
-    { name: '`g kurama`', value: 'Te saco un mate kurama'},
+    { name: '`g kurama`', value: 'Te saco un mate kurama'}
+)
+.setTimestamp()
+.setFooter('Gary \'s vessel', 'https://i.imgur.com/AVrgZHK.png');
+const helpEmbed2 = new Discord.MessageEmbed()
+.setColor(config.COLOR_EMBED)
+.setTitle('Comandos disponibles para el bot - 2')
+.setDescription('*Esto es lo que puedo hacer*')
+.setThumbnail('https://i.imgur.com/AVrgZHK.png')
+.addFields(
     { name: '`g border [texto] / g border [texto1] - [texto2]`', value: 'meme feo bordes negros'},
     { name: '`g 3ds`', value: '3ds cover'},
     { name: '`g dante`', value: 'Feature Dante from the Devil may cry series'},
@@ -24,7 +33,7 @@ const exampleEmbed = new Discord.MessageEmbed()
 .setTimestamp()
 .setFooter('Gary \'s vessel', 'https://i.imgur.com/AVrgZHK.png');
 
-const exampleEmbed2 = new Discord.MessageEmbed()
+const helpEmbedMusic = new Discord.MessageEmbed()
 .setColor(config.COLOR_EMBED)
 .setTitle('Comandos disponibles para el bot - 2')
 .setDescription('*Gary por el día, DJ Vessel por la noche*')
@@ -43,4 +52,4 @@ const exampleEmbed2 = new Discord.MessageEmbed()
 .setFooter('Gary \'s vessel', 'https://i.imgur.com/AVrgZHK.png');
 
 
-module.exports = {exampleEmbed, exampleEmbed2}
+module.exports = {helpEmbed1, helpEmbed2, helpEmbedMusic}
