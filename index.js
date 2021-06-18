@@ -11,7 +11,7 @@ const { helpEmbed1,helpEmbed2,helpEmbedMusic } = require('./commands/embeded.js'
 const { playSong } = require('./commands/play.js')
 const { shikePunch } = require('./commands/punch.js')
 const { joinChannel, leaveChannel } = require("./commands/join_leave.js")
-const { sendMeme } = require("./commands/borderMeme")
+const { sendMeme, sendMemeFailed } = require("./commands/borderMeme")
 const { memberJoined } = require("./commands/memberJoined")
 const { make3ds } = require("./commands/3ds")
 const { featureDante } = require("./commands/dante")
@@ -331,10 +331,12 @@ client.on("message", async message =>{
             if (nmb === 7) message.channel.send('squero')
             break;
         case 'border':
-            if (message.reference !== null) {
-                sendMeme(message,args)
-            }else{
+            if (message.reference === null || message.attachments === null) {
                 message.channel.send('Incluye una imagen primero, anda')
+                sendMemeFailed(message)
+            }else{
+                sendMeme(message,args)
+                
             }
             break;
         case '3ds':
