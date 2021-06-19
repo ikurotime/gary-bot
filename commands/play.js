@@ -131,8 +131,9 @@ try {
           const embed = new Discord.MessageEmbed()
           .setTitle('Escoge la canción 👇')
           .setColor(config.COLOR_EMBED);
-          
-          let m = await message.channel.send({components: [buttonRow1,buttonRow2,buttonRow3,buttonRow4,buttonRow5],embed: embed})
+
+          menssage.channel.send(embed)
+          let m = await message.channel.send({components: [buttonRow1,buttonRow2,buttonRow3,buttonRow4,buttonRow5]})
           
             const filter = (button) => button.clicker.user.id === message.author.id;
             const collector = m.createButtonCollector(filter, { time: 20000 });
