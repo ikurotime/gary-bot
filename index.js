@@ -349,11 +349,11 @@ client.on("message", async message =>{
             quote(message)
             break;
         case 'watchyt':
-            if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
+            if (!message.member.voice.channel) return message.channel.send('Debes unirte a un canal de voz.');
             watchTogueter(message, disbut)
             break;
         case 'delete':
-            if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
+            if (!message.member.voice.channel) return message.channel.send('Debes unirte a un canal de voz.');
             if (!message.guild) return message.channel.send('No hay ninguna cola que eliminar')
             queue.delete(message.guild.id);
             message.channel.send('La cola ha sido eliminada')
