@@ -132,7 +132,7 @@ try {
           .setTitle('Escoge la canción 👇')
           .setColor(config.COLOR_EMBED);
 
-          menssage.channel.send(embed)
+          message.channel.send(embed)
           let m = await message.channel.send({components: [buttonRow1,buttonRow2,buttonRow3,buttonRow4,buttonRow5]})
           
             const filter = (button) => button.clicker.user.id === message.author.id;
