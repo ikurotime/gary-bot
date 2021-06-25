@@ -100,23 +100,23 @@ try {
            let Option1 = new disbut.MessageButton()
           .setStyle('gray')
           .setID('one') 
-          .setLabel(`1. ${songArg.results[0].title}`)
+          .setLabel(`1. ${songArg.results[0].title.substring(0,75)}`)
           let Option2 = new disbut.MessageButton()
           .setStyle('gray')
           .setID('two') 
-          .setLabel(`2. ${songArg.results[1].title}`)
+          .setLabel(`2. ${songArg.results[1].title.substring(0,75)}`)
           let Option3 = new disbut.MessageButton()
           .setStyle('gray')
           .setID('three') 
-          .setLabel(`3. ${songArg.results[2].title}`)
+          .setLabel(`3. ${songArg.results[2].title.substring(0,75)}`)
           let Option4 = new disbut.MessageButton()
           .setStyle('gray')
           .setID('four') 
-          .setLabel(`4. ${songArg.results[3].title}`)
+          .setLabel(`4. ${songArg.results[3].title.substring(0,75)}`)
           let Option5 = new disbut.MessageButton()
           .setStyle('gray')
           .setID('five') 
-          .setLabel(`5. ${songArg.results[4].title}`)
+          .setLabel(`5. ${songArg.results[4].title.substring(0,75)}`)
 
           let buttonRow1 = new disbut.MessageActionRow()
           .addComponent(Option1)
@@ -132,8 +132,7 @@ try {
           .setTitle('Escoge la canción 👇')
           .setColor(config.COLOR_EMBED);
 
-          message.channel.send(embed)
-          let m = await message.channel.send('',{components: [buttonRow1,buttonRow2,buttonRow3,buttonRow4,buttonRow5]})
+          let m = await message.channel.send({components: [buttonRow1,buttonRow2,buttonRow3,buttonRow4,buttonRow5], embed:embed})
           
             const filter = (button) => button.clicker.user.id === message.author.id;
             const collector = m.createButtonCollector(filter, { time: 20000 });

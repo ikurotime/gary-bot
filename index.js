@@ -185,7 +185,7 @@ client.on("message", async message =>{
         case 'p':
         case 'play':
             if (!texto) return message.channel.send('Escribe alguna cancion o dame un link!')
-            playSong(message, args, serverQueue, queue, play, disbut)
+            playSong(message, args, serverQueue, queue, play, disbut).catch(console.error)
             
             break;
         case 's':
