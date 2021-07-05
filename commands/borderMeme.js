@@ -79,7 +79,7 @@ const debateMeme = async (message,args) =>{
     const background = await Canvas.loadImage('./img/debate.png');
 
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
-    context.font = '17px sans-serif';
+    context.font = '16px sans-serif';
     context.fillStyle = '#ffffff';
     context.textAlign= 'left'
     if (message.reference) {
