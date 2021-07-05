@@ -73,8 +73,10 @@ const sendMemeFailed = async (message) =>{
 const debateMeme = async (message,args) =>{
     const canvas = Canvas.createCanvas(400, 218);
     const context = canvas.getContext('2d');
-    const repliedTo =  await message.channel.messages.fetch(message.reference.messageID);
-   
+    let repliedTo
+    if (message.reference){
+    repliedTo =  await message.channel.messages.fetch(message.reference.messageID);
+        }
     const background = await Canvas.loadImage('./img/debate.png');
 
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -91,4 +93,20 @@ const debateMeme = async (message,args) =>{
 
     message.channel.send(attachment); 
 }
-module.exports = { sendMeme, sendMemeFailed, debateMeme}
+const debateMemeFailed = async message =>{
+    const canvas = Canvas.createCanvas(400, 218);
+    const context = canvas.getContext('2d');
+    const repliedTo = await message.fetch(message);
+    const background = await Canvas.loadImage('./img/debate.png');
+
+    context.drawImage(background, 0, 0, canvas.width, canvas.height);
+    context.font = '17px sans-serif';
+    context.fillStyle = '#ffffff';
+    context.textAlign= 'left'
+    context.fillText(getWrapText(repliedTo.author.username + ' no le sabe, no le sabe a gary xdxdxd        (what a dumbass)',47), 15, 178);
+   
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'debate.png');
+
+    message.channel.send(attachment); 
+}
+module.exports = { sendMeme, sendMemeFailed, debateMeme, debateMemeFailed}

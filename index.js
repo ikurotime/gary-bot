@@ -11,7 +11,7 @@ const { helpEmbed1,helpEmbed2,helpEmbedMusic } = require('./commands/embeded.js'
 const { playSong } = require('./commands/play.js')
 const { shikePunch } = require('./commands/punch.js')
 const { joinChannel, leaveChannel } = require("./commands/join_leave.js")
-const { sendMeme, sendMemeFailed, debateMeme } = require("./commands/borderMeme")
+const { sendMeme, sendMemeFailed, debateMeme, debateMemeFailed } = require("./commands/borderMeme")
 const { memberJoined } = require("./commands/memberJoined")
 const { make3ds } = require("./commands/3ds")
 const { featureDante } = require("./commands/dante")
@@ -336,7 +336,6 @@ client.on("message", async message =>{
                 sendMemeFailed(message)
             }else{
                 sendMeme(message,args)
-                
             }
             break;
         case '3ds':
@@ -353,7 +352,12 @@ client.on("message", async message =>{
             watchTogueter(message, disbut)
             break;
         case 'debate':
-            debateMeme(message,args)
+            if (message.reference === null || message.attachments === null) {
+                message.channel.send('Incluye algun texto, no?')
+                debateMemeFailed(message)
+            }else{
+                debateMeme(message,args)
+            }
             break;
         case 'delete':
             if (!message.member.voice.channel) return message.channel.send('Debes unirte a un canal de voz.');
