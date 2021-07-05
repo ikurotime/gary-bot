@@ -1,18 +1,19 @@
 const Discord = require("discord.js")
 const Canvas = require('canvas')
 
+const getWrapText = (text, length) => {
+    const temp = [];
+    for (let i = 0; i < text.length; i += length) {
+      temp.push(text.slice(i, i + length));
+    } 
+    temp.forEach(function(value, index){
+        temp[index] = value.trim();
+        });    
+    let texto = temp.join("\n");
+    return texto;
+  }
 const quote = async (message) => {
-    const getWrapText = (text, length) => {
-        const temp = [];
-        for (let i = 0; i < text.length; i += length) {
-          temp.push(text.slice(i, i + length));
-        } 
-        temp.forEach(function(value, index){
-            temp[index] = value.trim();
-            });    
-        let texto = temp.join("\n");
-        return texto;
-      }
+    
     if (message.reference === null){
         message.channel.send('Responde a un mensaje para hacer la quote')
         return
@@ -36,7 +37,5 @@ const quote = async (message) => {
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), '3ds.png');
     message.channel.send(attachment)
     }
-
-   
     }
-module.exports = { quote }
+module.exports = { quote, getWrapText }
