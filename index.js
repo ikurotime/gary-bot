@@ -352,7 +352,7 @@ client.on("message", async message =>{
             watchTogueter(message, disbut)
             break;
         case 'debate':
-            if (message.reference === null || message.attachments === null) {
+            if (args === null) {
                 message.channel.send('Incluye algun texto, no?')
                 debateMemeFailed(message)
             }else{

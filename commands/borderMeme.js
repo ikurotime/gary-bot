@@ -74,9 +74,8 @@ const debateMeme = async (message,args) =>{
     const canvas = Canvas.createCanvas(400, 218);
     const context = canvas.getContext('2d');
     let repliedTo
-    if (message.reference){
-    repliedTo =  await message.channel.messages.fetch(message.reference.messageID);
-        }
+    {message.reference !== null ?( repliedTo =  await message.channel.messages.fetch(message.reference.messageID)): null}
+        
     const background = await Canvas.loadImage('./img/debate.png');
 
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
