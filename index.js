@@ -352,10 +352,11 @@ client.on("message", async message =>{
             watchTogueter(message, disbut)
             break;
         case 'debate':
-            if (args === null) {
+            if (args.length === 0) {
                 message.channel.send('Incluye algun texto, no?')
                 debateMemeFailed(message)
             }else{
+                console.log(args)
                 debateMeme(message,args)
             }
             break;
