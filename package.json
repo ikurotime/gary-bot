@@ -15,6 +15,7 @@
     "canvas": "^2.8.0",
     "discord-buttons": "^3.2.1",
     "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
     "ffmpeg-binaries": "^3.2.2",
     "ffmpeg-static": "^4.3.0",
     "node-fetch": "^2.6.1",

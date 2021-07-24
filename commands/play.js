@@ -85,7 +85,7 @@ try {
   
         var opts = {
             maxResults: 5, //Maximo de resultados a encontrar
-            key: 'AIzaSyAi8exEgT11gaLBFMp7d3ERpdav3TPXir0', //Necesitas una CLAVE de la API de youtube. 
+            key: process.env.YT_KEY, //Necesitas una CLAVE de la API de youtube. 
             type: "video" // Que tipo de resultado a obtener.
         };
         if (args[0].startsWith('http')) argIsUrl = true

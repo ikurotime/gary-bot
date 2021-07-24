@@ -5,6 +5,8 @@ disbut(client)
 const config = require("./config.json")
 const ytdl = require('ytdl-core')
 const axios = require('axios')
+require('dotenv').config()
+
 
 
 const { helpEmbed1,helpEmbed2,helpEmbedMusic } = require('./commands/embeded.js')
@@ -373,4 +375,4 @@ client.on("message", async message =>{
       
 });
 
-client.login(config.BOT_TOKEN)
+client.login(process.env.BOT_TOKEN)
