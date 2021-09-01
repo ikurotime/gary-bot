@@ -192,11 +192,11 @@ client.on("message", async message =>{
             break;
         case 's':
         case 'skip':
+
              // Aquí verificamos si el usuario que escribió el comando está en un canal de voz y si hay una canción que omitir.
             if (!message.member.voice.channel) return message.channel.send('debes unirte a un canal de voz.');
             // Aquí verificamos si el objeto de la lista de canciones esta vacía.
             if (!serverQueue) return message.channel.send('¡No hay canción que saltar!, la cola esta vacía');
-
             if (args){
                 num = (parseInt(args) - 1)
                 if(serverQueue.songs[num]){
@@ -205,20 +205,20 @@ client.on("message", async message =>{
                         serverQueue.songs.splice(num,1)
                     }
                 }
-            }else if (serverQueue.songs.length > 1){
+            }
+            if (args.length === 0 && serverQueue.songs[1]){
             await serverQueue.connection.dispatcher.destroy();
-            message.channel.send(`Reproduciendo ahora: **${serverQueue.songs[1].title}**`);
-            play(message.guild, serverQueue.songs[1]);
-            serverQueue.songs.shift()
+            serverQueue.songs.splice(0,1)
+            message.channel.send(`Reproduciendo ahora: **${serverQueue.songs[0].title}**`);
+            play(message.guild, serverQueue.songs[0]);
             return
             }
-                 // Aquí borramos la cola de las canciones agregadas
-            serverQueue.songs = [];
+             serverQueue.songs = [];
          
             // Finalizamos el dispatcher
-            await serverQueue.connection.dispatcher.end();
-            message.channel.send('No hay más canciones, me piro.')   
-                 
+             await serverQueue.connection.dispatcher.end();
+             message.channel.send('No hay más canciones, me piro.')   
+            
             break;
         case '8ball':
 
@@ -333,7 +333,8 @@ client.on("message", async message =>{
             if (nmb === 7) message.channel.send('squero')
             break;
         case 'border':
-            if (message.reference === null || message.attachments === null) {
+            
+            if (message.attachments.array()[0] === undefined && message.reference === null) {
                 message.channel.send('Incluye una imagen primero, anda')
                 sendMemeFailed(message)
             }else{
