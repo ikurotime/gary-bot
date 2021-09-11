@@ -15,7 +15,7 @@ const watchTogueter = async (message, disbut) => {
             validate: null
         }),
         headers:{
-            "Authorization":`Bot ${config.BOT_TOKEN}`,
+            "Authorization":`Bot ${process.env.BOT_TOKEN}`,
             "Content-type":"application/json"
         }
     }).then(res => res.json()).then(invite =>{
@@ -32,6 +32,6 @@ const watchTogueter = async (message, disbut) => {
         .setLabel('Unirse')
       
       message.channel.send({ button: button, embed: embed });
-    }).then(msg => msg.delete({options: 600000}))
+    }).then(msg => msg.delete({options: 18000}))
     }
 module.exports = { watchTogueter }
