@@ -21,7 +21,7 @@ const { quote } = require("./commands/quote")
 const { watchTogueter } = require("./commands/watchTogether")
 
 const prefix = "g "
-const play = (guild, song,message) =>  {
+const play = (guild, song,msg) =>  {
     const serverQueue = queue.get(guild.id);
     // verificamos que hay musica en nuestro objeto de lista
     if (!song) {
@@ -40,11 +40,11 @@ const play = (guild, song,message) =>  {
     serverQueue.songs.shift();
 
     // Llama a la función de reproducción nuevamente con la siguiente canción
-    play(guild, serverQueue.songs[0]);
+    play(guild, serverQueue.songs[0],msg);
     })
     .on('error', error => {
     console.error(error);
-    message.channel.send('Ha ocurrido un error, espera un momento y vuelve a intentarlo (`g delete queue` podria ayudar)')
+    msg.channel.send('Ha ocurrido un error, espera un momento y vuelve a intentarlo (`g delete` podria ayudar)')
     });
 
     // Configuramos el volumen de la reproducción de la canción
@@ -210,7 +210,7 @@ client.on("message", async message =>{
             await serverQueue.connection.dispatcher.destroy();
             serverQueue.songs.splice(0,1)
             message.channel.send(`Reproduciendo ahora: **${serverQueue.songs[0].title}**`);
-            play(message.guild, serverQueue.songs[0]);
+            play(guild=message.guild, song=serverQueue.songs[0],msg=message);
             return
             }
              serverQueue.songs = [];
