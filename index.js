@@ -249,14 +249,14 @@ client.on("message", async message =>{
             }
              // Agregarmos la canción actual reproduciendo
              let playName = 
-             `${hr}\n🔊 Ahora: ${serverQueue.songs[0].title}\n🕐 Tiempo: (${str_pad_left(Math.floor(time / 60),'0',2)}:${str_pad_left((time - (Math.floor(time / 60)) * 60),'0',2)} / ${str_pad_left(Math.floor(serverQueue.songs[0].duration / 60),'0',2) }:${str_pad_left((serverQueue.songs[0].duration - (Math.floor(serverQueue.songs[0].duration / 60)) * 60),'0',2)} )\n👤 Por: ${serverQueue.songs[0].author}\n${hr}`
+             `${hr}\n🔊 Ahora: ${serverQueue.songs[0].title}\n🕐 Tiempo: (${str_pad_left(Math.floor(time / 60),'0',2)}:${str_pad_left((time - (Math.floor(time / 60)) * 60),'0',2)} / ${serverQueue.songs[0].length}) \n👤 Por: ${serverQueue.songs[0].author.name}\n${hr}`
              // La cantidad de canciones encontradas
              let countSong = `\n${hr}\n ${serverQueue.songs.length > 1 ? `${serverQueue.songs.length} canciones.` : `${serverQueue.songs.length} canción.` } `
              let listValue = `${list ? list : 'No hay canciones en cola'}`
             const songInfoEmbed = new Discord.MessageEmbed()
             .setColor(config.COLOR_EMBED)
             .setTitle('LISTA DE CANCIONES')
-            .setThumbnail(`${serverQueue.songs[0].thumbnail}`)
+            .setThumbnail(`${serverQueue.songs[0].thumbnail_url}`)
             .addFields(
                 {name:'Reproduciendo',value: playName},
                 {name:'En cola', value: listValue},
