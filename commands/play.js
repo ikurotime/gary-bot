@@ -2,15 +2,18 @@ const Discord = require("discord.js")
 const ytdl = require('ytdl-core')
 const config = require("../config.json")
 const search = require('youtube-search')
+const ytfps = require('ytfps');
 
 const playSelectedSong = async (message,songURL, serverQueue, queue, play,voiceChannel) =>{
   const songInfo = await ytdl.getInfo(songURL);
 const song = {
     title: songInfo.videoDetails.title,
-    duration: songInfo.videoDetails.lengthSeconds,
+    length: songInfo.videoDetails.lengthSeconds,
     url: songInfo.videoDetails.video_url,
-    thumbnail: songInfo.videoDetails.thumbnails[1].url,
-    author: message.author.tag
+    thumbnail_url: songInfo.videoDetails.thumbnails[1].url,
+    author: {
+      name: message.author.tag
+    }
 };
 // <-- Verificamos la lista de canciones de un servidor -->
 if (!serverQueue) {
@@ -67,6 +70,57 @@ try {
   }
                 
 }
+const playPlaylist = async (message,url, serverQueue, queue, play,voiceChannel) => {
+ const id = url.substring(url.lastIndexOf('=') + 1)
+  ytfps(id).then(async res => {
+   
+    const playlist = {
+      title: res.title,
+      length: res.video_count,
+      videos: res.videos
+    }
+    if (!serverQueue) {
+      // Si NO hay una lista de música.
+        // <-- Creamos nuestra cola de música a reproducir  -->
+  // Creamos el conjunto de datos para nuestra cola de música
+  const queueObject = {
+      textChannel: message.channel, //guardamos el canal de texto
+      voiceChannel: voiceChannel, // guardamos el canal de voz
+      connection: null, // un objeto para la conexión 
+      songs: [], // creamos la lista de canciones
+      volume: 8, // volumen al iniciar la cola
+      playing: true, // un objeto para validar la cola de música en reproducción.
+  };
+  // <-- Establecer la cola de música  -->
+  // Creando el conjunto de datos para nuestra cola de música
+  queue.set(message.guild.id, queueObject);
+  // Agregamos las canciones al conjunto de datos
+  queueObject.songs.push(...playlist.videos);
+  // <-- Conectar al canal de voz  -->
+  try {
+      // Aquí unimos el bot al canal de voz y guardar nuestra conexión en nuestro objeto.
+      var connection = await voiceChannel.join();
+      queueObject.connection = connection;
+      message.channel.send(`Añadidos **${playlist.length}** videos a la cola`);
+      
+      message.channel.send(`Reproduciendo ahora: **${queueObject.songs[0].title}**`);
+      // Llamar a la función de reproducción para comenzar una canción.
+      play(message.guild, queueObject.songs[0]);
+  } catch (err) {
+      // Imprimir el mensaje de error si el bot no puede unirse al chat de voz
+      console.log(err);
+      queue.delete(message.guild.id);
+      return message.channel.send(err);
+  }
+    }else {
+      // Si HAY una lista de música reproduciendo.
+      serverQueue.songs.push(playlist.videos);
+      return message.channel.send(`**${playlist.length}** han sido añadidos a la cola!, __por: ${message.author.tag}__`);
+    }
+}).catch(err => {
+    throw err;
+});
+}
    const playSong = async (message,args, serverQueue, queue, play, disbut) => {
     
     const voiceChannel = message.member.voice.channel;
@@ -82,19 +136,23 @@ try {
       }
     
     // <-- Capturamos la información de la música a reproducir -->
-  
+    //.startsWith(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/))
         var opts = {
             maxResults: 5, //Maximo de resultados a encontrar
             key: process.env.YT_KEY, //Necesitas una CLAVE de la API de youtube. 
             type: "video" // Que tipo de resultado a obtener.
         };
-        if (args[0].startsWith('http')) argIsUrl = true
+        if (args[0].match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/(.*)$/)) argIsUrl = true
         let songArg
         let songURL
         if (argIsUrl){
            songArg = 'noArgs';
            songURL = args[0];
-           playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
+           if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/watch(.*)$/)) {
+                playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
+           }else if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
+                playPlaylist(message,songURL, serverQueue, queue, play,voiceChannel)
+           }
         }else{
            songArg = await search(args.join(' '), opts);
            let Option1 = new disbut.MessageButton()
