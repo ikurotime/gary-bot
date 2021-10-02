@@ -23,7 +23,7 @@ const queueObject = {
     voiceChannel: voiceChannel, // guardamos el canal de voz
     connection: null, // un objeto para la conexión 
     songs: [], // creamos la lista de canciones
-    volume: 2, // volumen al iniciar la cola
+    volume: 5, // volumen al iniciar la cola
     playing: true, // un objeto para validar la cola de música en reproducción.
 };
 
