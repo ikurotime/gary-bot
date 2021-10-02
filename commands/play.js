@@ -143,12 +143,15 @@ const playPlaylist = async (message,url, serverQueue, queue, play,voiceChannel) 
             type: "video" // Que tipo de resultado a obtener.
         };
         if (args[0].match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/(.*)$/)) argIsUrl = true
+        console.log(args[0])
+        console.log(argIsUrl)
+
         let songArg
         let songURL
         if (argIsUrl){
            songArg = 'noArgs';
            songURL = args[0];
-           if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/watch(.*)$/)) {
+           if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/(watch(.*)|(.*))$/)) {
                 playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
            }else if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/playlist(.*)$/)) {
                 playPlaylist(message,songURL, serverQueue, queue, play,voiceChannel)
