@@ -88,7 +88,7 @@ const playPlaylist = async (message,url, serverQueue, queue, play,voiceChannel) 
       voiceChannel: voiceChannel, // guardamos el canal de voz
       connection: null, // un objeto para la conexión 
       songs: [], // creamos la lista de canciones
-      volume: 8, // volumen al iniciar la cola
+      volume: 5, // volumen al iniciar la cola
       playing: true, // un objeto para validar la cola de música en reproducción.
   };
   // <-- Establecer la cola de música  -->
@@ -142,7 +142,7 @@ const playPlaylist = async (message,url, serverQueue, queue, play,voiceChannel) 
             key: process.env.YT_KEY, //Necesitas una CLAVE de la API de youtube. 
             type: "video" // Que tipo de resultado a obtener.
         };
-        if (args[0].match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/(.*)$/)) argIsUrl = true
+        if (args[0].match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/(.*)$/)) argIsUrl = true
         let songArg
         let songURL
         if (argIsUrl){
