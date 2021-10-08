@@ -229,14 +229,14 @@ client.on("message", async message =>{
             break;
         case 'queue':
         case 'q':
-            if (!serverQueue ) return message.channel.send('¡No hay canción que mostrar!, la cola esta vacía');
+            if (!serverQueue | serverQueue === null ) return message.channel.send('¡No hay canción que mostrar!, la cola esta vacía');
             let i = 1
         
             // Listamos las canciones de la cola
             let list = serverQueue.songs.slice(1).map((m) => {
-                // if(i > 16) return // Lista solo 15 canciones
+                 if(i > 10) return // Lista solo 15 canciones
                 i++;
-                return `[${i}] - 🎵 ${m.title}  / 👤 Por: ${m.author}` // Construimos la info por cada canción
+                return `[${i}] - 🎵 ${m.title}  / 👤 Por: ${m.author.name ? m.author.name : m.author}` // Construimos la info por cada canción
                     
                }).join('\n')
                 
@@ -248,9 +248,10 @@ client.on("message", async message =>{
                 return (new Array(length+1).join(pad)+string).slice(-length);
             }
              // Agregarmos la canción actual reproduciendo
-             let playName = 
-             `${hr}\n🔊 Ahora: ${serverQueue.songs[0].title}\n🕐 Tiempo: (${str_pad_left(Math.floor(time / 60),'0',2)}:${str_pad_left((time - (Math.floor(time / 60)) * 60),'0',2)} / ${serverQueue.songs[0].length}) \n👤 Por: ${serverQueue.songs[0].author.name}\n${hr}`
-             // La cantidad de canciones encontradas
+             let playName  = 
+                `${hr}\n🔊 Ahora: ${serverQueue.songs[0].title}\n🕐 Tiempo: (${str_pad_left(Math.floor(time / 60),'0',2)}:${str_pad_left((time - (Math.floor(time / 60)) * 60),'0',2)} / ${serverQueue.songs[0].length}) \n👤 Por: ${serverQueue.songs[0].author.name}\n${hr}`
+
+            // La cantidad de canciones encontradas
              let countSong = `\n${hr}\n ${serverQueue.songs.length > 1 ? `${serverQueue.songs.length} canciones.` : `${serverQueue.songs.length} canción.` } `
              let listValue = `${list ? list : 'No hay canciones en cola'}`
             const songInfoEmbed = new Discord.MessageEmbed()
@@ -364,10 +365,34 @@ client.on("message", async message =>{
             }
             break;
         case 'delete':
+            if(args !== []) return
             if (!message.member.voice.channel) return message.channel.send('Debes unirte a un canal de voz.');
             if (!message.guild) return message.channel.send('No hay ninguna cola que eliminar')
             queue.delete(message.guild.id);
             message.channel.send('La cola ha sido eliminada')
+            leaveChannel(message)
+            break;
+        case 'shuffle':
+            if (!message.member.voice.channel) return message.channel.send('Debes unirte a un canal de voz.');
+            if (serverQueue === undefined) return message.channel.send('No hay ninguna cola a la que hacer shuffle')
+            function shuffle(arr) {
+                if (arr.length < 3) {
+                  return arr;
+                }
+                
+                // Note the -2 (instead of -1) and the i > 1 (instead of i > 0):
+                
+                for (let i = arr.length - 2; i > 1; --i) {
+                    const j = 1 + Math.floor(Math.random() * i);
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                
+                return arr;
+              }
+              
+            shuffle(serverQueue.songs)
+            message.channel.send('La cola ha sido mezclada')
+
             break;
         default:
          message.channel.send('que dise ahi nose ingle')

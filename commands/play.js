@@ -6,9 +6,12 @@ const ytfps = require('ytfps');
 
 const playSelectedSong = async (message,songURL, serverQueue, queue, play,voiceChannel) =>{
   const songInfo = await ytdl.getInfo(songURL);
+  function str_pad_left(string,pad,length) {
+    return (new Array(length+1).join(pad)+string).slice(-length);
+}
 const song = {
     title: songInfo.videoDetails.title,
-    length: songInfo.videoDetails.lengthSeconds,
+    length: ` ${str_pad_left(Math.floor(songInfo.videoDetails.lengthSeconds / 60),'0',2) }:${str_pad_left((songInfo.videoDetails.lengthSeconds - (Math.floor(songInfo.videoDetails.lengthSeconds / 60)) * 60),'0',2)}`,
     url: songInfo.videoDetails.video_url,
     thumbnail_url: songInfo.videoDetails.thumbnails[1].url,
     author: {
@@ -144,18 +147,18 @@ const playPlaylist = async (message,url, serverQueue, queue, play,voiceChannel) 
         };
         if (args[0].match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/(.*)$/)) argIsUrl = true
         console.log(args[0])
-        console.log(argIsUrl)
 
         let songArg
         let songURL
         if (argIsUrl){
            songArg = 'noArgs';
            songURL = args[0];
-           if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/(watch(.*)|(.*))$/)) {
+           if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/playlist(.*)$/)) {
+          
+               playPlaylist(message,songURL, serverQueue, queue, play,voiceChannel)
+          }else if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/(watch(.*)|(.*))$/)) {
                 playSelectedSong(message,songURL, serverQueue, queue, play,voiceChannel)
-           }else if (songURL?.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com|youtu.be)\/playlist(.*)$/)) {
-                playPlaylist(message,songURL, serverQueue, queue, play,voiceChannel)
-           }
+           } 
         }else{
            songArg = await search(args.join(' '), opts);
            let Option1 = new disbut.MessageButton()

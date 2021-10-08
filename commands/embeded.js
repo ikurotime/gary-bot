@@ -29,7 +29,8 @@ const helpEmbed2 = new Discord.MessageEmbed()
     { name: '`g 3ds`', value: '3ds cover'},
     { name: '`g dante`', value: 'Feature Dante from the Devil may cry series'},
     { name: '`g quote`', value: 'Hago una quote del mensaje respondido'},
-    { name: '`g debate [texto]` o `g debate` al responder', value: 'Hago un debate con el titulo que elijas'}
+    { name: '`g debate [texto]` o `g debate` al responder', value: 'Hago un debate con el titulo que elijas'},
+    { name: '`g watchyt`', value: 'Crea una sala de watchtogether'}
 )
 .setTimestamp()
 .setFooter('Gary \'s vessel', 'https://i.imgur.com/AVrgZHK.png');
