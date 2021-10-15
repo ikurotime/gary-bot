@@ -7,7 +7,27 @@ const ytdl = require('ytdl-core')
 const axios = require('axios')
 require('dotenv').config()
 
+const admin = require("firebase-admin");
 
+const serviceAccount = {
+    "type": process.env.TYPE,
+    "project_id": process.env.PROJECT_ID,
+    "private_key_id":process.env.PRIVATE_KEY_ID,
+    "private_key": process.env.PRIVATE_KEY,
+    "client_email": process.env.CLIENT_EMAIL,
+    "client_id": process.env.CLIENT_ID,
+    "auth_uri": process.env.AUTH_URI,
+    "token_uri": process.env.TOKEN_URI,
+    "auth_provider_x509_cert_url": process.env.AUTH_PROVIDER_X509_CERT_URL,
+    "client_x509_cert_url": process.env.CLIENT_X509_CERT_URL
+  }
+  
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: 'gary-62a0f.appspot.com'
+  });
+const db = admin.firestore();
 
 const { helpEmbed1,helpEmbed2,helpEmbedMusic } = require('./commands/embeded.js')
 const { playSong } = require('./commands/play.js')
@@ -394,11 +414,60 @@ client.on("message", async message =>{
             message.channel.send('La cola ha sido mezclada')
 
             break;
-        default:
-         message.channel.send('que dise ahi nose ingle')
-            break;
-    }    
-      
-});
-
+            case 'save':
+                if (message.attachments.array()[0] === undefined && message.reference === null) {
+                    message.channel.send('Incluye una imagen primero, anda')
+                }else{
+                     let file
+                     if (message.reference === null){
+                        file = message.attachments.array()[0].url
+                       }else{
+                        const repliedTo = await message.channel.messages.fetch(message.reference.messageID);
+                        if(repliedTo.attachments.array()[0] !== undefined)
+                        file = repliedTo.attachments.array()[0].url
+                       }
+                      console.log(file)
+                       if (file) {
+                            await db.collection('images').doc().set({url: file})
+                            message.channel.send('Imagen guardada!')
+                       }else{
+                            message.channel.send('No puedo guardar eso.')
+                       }
+                       
+                }
+                break;
+            case 'garys':
+                function shuffle(array) {
+                    let currentIndex = array.length,  randomIndex;
+                  
+                    // While there remain elements to shuffle...
+                    while (currentIndex != 0) {
+                  
+                      // Pick a remaining element...
+                      randomIndex = Math.floor(Math.random() * currentIndex);
+                      currentIndex--;
+                  
+                      // And swap it with the current element.
+                      [array[currentIndex], array[randomIndex]] = [
+                        array[randomIndex], array[currentIndex]];
+                    }
+                  
+                    return array;
+                  }
+                  
+                const images = []
+                let imagesRef = await db.collection("images").get()
+                imagesRef.docs.forEach(doc =>{
+                    images.push(doc.data())
+                })
+                shuffle(images)
+                shuffle(images)
+                message.channel.send(images[0].url)
+                break;
+            default:
+             message.channel.send('que dise ahi nose ingle')
+                break;
+        }    
+          
+    });
 client.login(process.env.BOT_TOKEN)
