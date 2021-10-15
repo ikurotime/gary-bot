@@ -39,7 +39,6 @@ const { make3ds } = require("./commands/3ds")
 const { featureDante } = require("./commands/dante")
 const { quote } = require("./commands/quote")
 const { watchTogueter } = require("./commands/watchTogether");
-const { saveGaleria } = require('./commands/saveGaleria');
 
 const prefix = "g "
 const play = (guild, song,msg) =>  {
