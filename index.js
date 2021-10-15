@@ -38,7 +38,8 @@ const { memberJoined } = require("./commands/memberJoined")
 const { make3ds } = require("./commands/3ds")
 const { featureDante } = require("./commands/dante")
 const { quote } = require("./commands/quote")
-const { watchTogueter } = require("./commands/watchTogether")
+const { watchTogueter } = require("./commands/watchTogether");
+const { saveGaleria } = require('./commands/saveGaleria');
 
 const prefix = "g "
 const play = (guild, song,msg) =>  {
@@ -463,6 +464,99 @@ client.on("message", async message =>{
                 shuffle(images)
                 shuffle(images)
                 message.channel.send(images[0].url)
+                break;
+            case 'galeria':
+                if (message.attachments.array()[0] === undefined && message.reference === null) {
+                    message.channel.send('Incluye una imagen primero, anda')
+                }else{
+                    let file
+                    if (message.reference === null){
+                        file = message.attachments.array()[0].url
+                       }else{
+                        const repliedTo = await message.channel.messages.fetch(message.reference.messageID);
+                        file =  repliedTo.attachments.array()[0].url
+                       }
+                       const embed = new Discord.MessageEmbed()
+                          .setTitle('¿A qué canal lo enviamos? 🖼💨')
+                          .setColor(config.COLOR_EMBED);
+                          let Option1 = new disbut.MessageButton()
+                          .setStyle('gray')
+                          .setID('one') 
+                          .setLabel(`1. Garabacetos`)
+                          let Option2 = new disbut.MessageButton()
+                          .setStyle('gray')
+                          .setID('two') 
+                          .setLabel(`2. Con colorcito`)
+                          let Option3 = new disbut.MessageButton()
+                          .setStyle('gray')
+                          .setID('three') 
+                          .setLabel(`3. Con colorcito pngs`)
+                          let Option4 = new disbut.MessageButton()
+                          .setStyle('gray')
+                          .setID('four') 
+                          .setLabel(`4. Fotitos y capturas`)
+                          let Option5 = new disbut.MessageButton()
+                          .setStyle('gray')
+                          .setID('five') 
+                          .setLabel(`5. Gifts and more cosos`)
+                          let Option6 = new disbut.MessageButton()
+                          .setStyle('gray')
+                          .setID('six') 
+                          .setLabel(`6. No pos meme material`)
+                          let Option7 = new disbut.MessageButton()
+                          .setStyle('gray')
+                          .setID('seven') 
+                          .setLabel(`7. Gartic phone`)
+                
+                          let buttonRow1 = new disbut.MessageActionRow()
+                          .addComponent(Option1).addComponent(Option2).addComponent(Option3)
+                          .addComponent(Option4)
+                          let buttonRow2 = new disbut.MessageActionRow()
+                           .addComponent(Option5).addComponent(Option6)
+                           .addComponent(Option7)
+                          let m = await message.channel.send({components: [buttonRow1,buttonRow2], embed:embed})
+                        
+                
+                          const filter = (button) => button.clicker.user.id === message.author.id;
+                          const collector = m.createButtonCollector(filter, { time: 20000 });
+                          collector.on('collect', async b => {
+                            console.log(b.id)
+                            b.defer()
+                            if (b.id === 'one') {
+                                client.channels.cache.get('562337252328341504').send(file)
+                              b.message.delete()
+                              collector.stop()
+                            } else if (b.id === 'two') {
+                                client.channels.cache.get('562364482396094464').send(file)
+                              b.message.delete()
+                              collector.stop()
+                
+                            } else if (b.id === 'three') {
+                                client.channels.cache.get('562365885310959617').send(file)
+                              b.message.delete()
+                              collector.stop()
+                
+                            }else if (b.id === 'four') {
+                                client.channels.cache.get('562368479341182976').send(file)
+                              b.message.delete()
+                              collector.stop()
+                            }else if (b.id === 'five') {
+                                client.channels.cache.get('562364723836878887').send(file)
+                              b.message.delete()
+                              collector.stop()
+                            }else if (b.id === 'six') {
+                                client.channels.cache.get('575113407003623430').send(file)
+                            b.message.delete()
+                            collector.stop()
+                            }else if (b.id === 'seven') {
+                                client.channels.cache.get('892605016274247750').send(file)
+                            b.message.delete()
+                            collector.stop()
+                              }
+                            
+                          })
+                          
+                }
                 break;
             default:
              message.channel.send('que dise ahi nose ingle')
