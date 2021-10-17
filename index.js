@@ -64,7 +64,7 @@ const play = (guild, song,msg) =>  {
     })
     .on('error', error => {
     console.error(error);
-    msg.channel.send('Ha ocurrido un error, espera un momento y vuelve a intentarlo (`g delete` podria ayudar)')
+    client.channels.cache.get('81824684462014465').send('Ha ocurrido un error, espera un momento y vuelve a intentarlo (`g delete` podria ayudar)')
     });
 
     // Configuramos el volumen de la reproducción de la canción
@@ -385,7 +385,7 @@ client.on("message", async message =>{
             }
             break;
         case 'delete':
-            if(args !== []) return
+            if(args.length !== 0) return
             if (!message.member.voice.channel) return message.channel.send('Debes unirte a un canal de voz.');
             if (!message.guild) return message.channel.send('No hay ninguna cola que eliminar')
             queue.delete(message.guild.id);
